@@ -7,7 +7,9 @@
 <VirtualHost {{ apache_listen_ip }}:{{ apache_listen_port }}>
   ServerName {{ vhost.servername }}
 {% if vhost.serveralias is defined %}
-  ServerAlias {{ vhost.serveralias }}
+{% for server_alias in vhost.serveralias %}
+  ServerAlias {{ server_alias }}
+{% endfor %}
 {% endif %}
 {% if vhost.serveradmin is defined %}
   ServerAdmin {{ vhost.serveradmin }}
@@ -15,6 +17,7 @@
 {% if vhost.documentroot is defined %}
   DocumentRoot "{{ vhost.documentroot }}"
 {% endif %}
+
 {% if vhost.documentroot is defined %}
   <Directory "{{ vhost.documentroot }}">
     AllowOverride {{ vhost.allow_override | default(apache_allow_override) }}
@@ -32,7 +35,6 @@
 {{ vhost.extra_parameters | indent(width=2,first=True) }}
 {% endif %}
 </VirtualHost>
-
 {% endfor %}
 
 {# Set up SSL VirtualHosts #}
@@ -41,7 +43,9 @@
 <VirtualHost {{ apache_listen_ip }}:{{ apache_listen_port_ssl }}>
   ServerName {{ vhost.servername }}
 {% if vhost.serveralias is defined %}
-  ServerAlias {{ vhost.serveralias }}
+{% for server_alias in vhost.serveralias %}
+  ServerAlias {{ server_alias }}
+{% endfor %}
 {% endif %}
 {% if vhost.serveradmin is defined %}
   ServerAdmin {{ vhost.serveradmin }}
