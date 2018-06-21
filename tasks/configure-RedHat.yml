@@ -22,3 +22,10 @@
     mode: 0644
   notify: restart apache
   when: apache_create_vhosts
+
+- name: Disable "Welcome" page.
+  lineinfile:
+    path: "{{ apache_conf_path }}/welcome.conf"
+    regexp: '(^\s+ErrorDocument 403.*)'
+    line: '#\1'
+    backrefs: yes
